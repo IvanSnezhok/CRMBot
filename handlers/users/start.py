@@ -1,8 +1,10 @@
+from datetime import datetime
+
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.builtin import CommandStart
 
-from keyboards.default.keyboard import auth_contact, main_menu, geo_send, add_money
+from keyboards.default.keyboard import auth_contact, main_menu, geo_send, add_money, remove_keyboard
 from keyboards.inline.keyboard import location, check_lists_read
 from loader import dp, db
 
@@ -44,7 +46,7 @@ async def check_list(message: types.Message, state: FSMContext):
 
 
 @dp.message_handler(text="Мої гроші")
-async def my_money(message: types.Message, state: FSMContext):
+async def my_money(message: types.Message):
     money_result = await db.get_money(message.from_user.id)
     money_text = []
     all_money = 0.0
@@ -55,6 +57,19 @@ async def my_money(message: types.Message, state: FSMContext):
     await message.answer(f"Всього грошей: {all_money}", reply_markup=add_money)
 
 
+@dp.message_handler(text="Додати гроші")
+async def add_my_money(message: types.Message, state: FSMContext):
+    await message.answer("Введіть кількість грошей\n"
+                         "Наприклад:\n"
+                         "123.50 або 200", reply_markup=remove_keyboard)
+    await state.set_state('add_money')
+
+
+@dp.message_handler(state='add_money')
+async def add_money_text(message: types.Message, state: FSMContext):
+    await db.add_money(telegram_id=message.from_user.id, money=message.text, date=datetime.now())
+    await message.answer("Гроші додано", reply_markup=main_menu)
+    await state.finish()
 
 
 @dp.message_handler(text='Зміна')
@@ -70,14 +85,13 @@ async def work_time_place(message: types.Message):
 @dp.callback_query_handler(lambda call: call.data in ['hashtag_1_0', 'hashtag_2_0',
                                                       'litniy_maydanchik_1_0', 'litniy_maydanchik_2_0'])
 async def hashtag_callback(call: types.CallbackQuery):
-    await call.message.answer(f"Ви обрали гео-локацію: {call.data}")
+    await call.message.answer(f"Ви обрали локацію: {call.data}")
     if call.data == 'hashtag_1_0':
-        await call.message.edit_text(f"Чек лист 1.0", reply_markup=main_menu)
-    elif call.data == 'hashtag_2_0':
-        await call.message.edit_text(f"Чек лист 2")
-    elif call.data == 'litniy_maydanchik_1_0':
-        await call.message.edit_text(f"Літній майданчик 1.0", reply_markup=main_menu)
-    elif call.data == 'litniy_maydanchik_2_0':
-        await call.message.edit_text(f"Літній майданчик 2.0", reply_markup=main_menu)
 
-    await call.message.edit_text(f"", reply_markup=main_menu)
+    elif call.data == 'hashtag_2_0':
+
+    elif call.data == 'litniy_maydanchik_1_0':
+
+    elif call.data == 'litniy_maydanchik_2_0':
+
+

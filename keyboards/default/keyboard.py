@@ -1,5 +1,6 @@
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 
+remove_keyboard = ReplyKeyboardRemove()
 auth_contact = ReplyKeyboardMarkup(keyboard=[
     [
         KeyboardButton(text='Відправити контакт', request_contact=True)
