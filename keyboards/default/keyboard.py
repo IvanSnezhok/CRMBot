@@ -27,9 +27,11 @@ geo_send = ReplyKeyboardMarkup(keyboard=[
     ]
 ], resize_keyboard=True, one_time_keyboard=True)
 
-location = InlineKeyboardMarkup(row_width=2)
-location.add(InlineKeyboardButton(text='Hashtag 1.0', callback_data='hashtag_1_0'),
-             InlineKeyboardButton(text='Hashtag 2.0', callback_data='hashtag_2_0'),
-             InlineKeyboardButton(text='Літній майданчик 1.0', callback_data='litniy_maydanchik_1_0'),
-             InlineKeyboardButton(text='Літній майданчик 2.0', callback_data='litniy_maydanchik_2_0'),
-             )
+add_money = ReplyKeyboardMarkup(keyboard=[
+    [
+        KeyboardButton(text='Додати гроші'),
+        KeyboardButton(text='Назад')
+    ]
+], resize_keyboard=True, one_time_keyboard=True)
+
+
