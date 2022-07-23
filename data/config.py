@@ -12,3 +12,5 @@ DB_USER = env.str("DB_USER")
 DB_PASS = env.str("DB_PASS")
 DB_HOST = env.str("DB_HOST")
 DB_NAME = env.str("DB_NAME")
+
+GOOGLE_SHEETS_KEY = env.str("GOOGLE_SHEETS_KEY")

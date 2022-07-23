@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "pub-good-friend-2",
+  "private_key_id": "1cd42b8053e00da34cf60b4125548bf659818d98",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDr8YKnFy232YVK\nMHuo3VvuHP2WQ6M8A/8ZWbis68faq/2ujnft9RYYoSVR61G7eNPmH4bbPWEtdFFa\nDcwaFmNIUGH3U0WDYQpzfybIrMZZQlS0+ymzG4awjP3NOuEjmos1HB4OlF0y61LO\ntPKRvAvxtV5FqnNqAL1Tlfzlfr2xCGcOnRjaSLIsULCmOtg2zbh3jLv522vzNx2l\nK8e5ecwLM57Efjmisx8jQHW0FLsjj6UbCRzkzWwWGlvVNRcXz3mQtOVpHXmsFc2Y\nitaIWuPnmSbAYdwBXwEdrqvQYSfW8Bo6WGbG+X2lGpqRhvjL0bEbI00euHHXjKQg\nh4n344ftAgMBAAECggEACFjSbPPad7MXzpCZh1dRbcKTzBGXgEOJ7k0oxeFPgDJu\ndpLutjnh7rwgtF21VgMHyA/cdvwcaH3BdQSg8FlTaNcDKDtHbcbsljps1lOabsT0\ndzSdfIsgQDW0suJ+3YIVo6rbe1uPUoJVux9Wp4Y2C/aFH8TQcXMWP5NCT6IkttMK\nYhcn1Hgf+wSCEKez4nZhMu4VNgBhBxAzXvvMPoJEDxohFRgqc8UXiJ7hua6MifpH\nj6BBAKVHXm4D/WXEVugbamn7Nxwls1P3hX5btvIYA96v9Vl3lNlTlH/taaxOdPDs\nNuHwiWuGZBSeCVbDdrAyzr2QmJ1E4bmB2RBr26W3hwKBgQD5ux9CbdrhdMFmqFzQ\nfhsdfchriL2WWq5wKIjcgRRIeryoDPNdMcEPnNs0lOHYQ7N7+2MxZIbjxoq7H98z\n90OQLW6yDOx54Ks9Gsjaf2qoeEznDft+SveHXEo43u6zpZkbxxFFg2qI6TeUBQdE\nKZD1kgGXqWCxvAoOA07eQV1pxwKBgQDx3ciZIPbnD4HrZvQ4LQwUdFpas4WfVSeh\nC3DuKuy2CgMd49jdcSlYfJPsGCg06SeuWenBqheaneoDJ2wcI1AV8DtdlZFbuAUN\npwLxA9NAkrgW1rwqxpcgx3bl7jiGtx9Tto89meWnUg1NVJhZp/oC7S7PqZWjnurr\n9HKz/JMgqwKBgFj18bLGU3yRDPw26alT4vDkh+rWsULIVu+ZYPe7+6++GUp8Io2G\nVdHr/KKEjtdtdpip+rHzr6GgbncuaWKnqKfJp29B71OTVyzTR82eKi6NfEeq0XYx\n2m+bzsznjXztdtdQWLS8lczj12qhR+9eJ0dzlaGjMtDdvW80ennuKwqtAoGABngx\nOm9YS1vt1LcfRzVlQlLOa+irZVSox7T/o09An6nq5WzHyzyQp45FgqYuxSOLbS14\nhDahhQA+VzFBwgrrxHp1jA5JIhPtBq119a5tgyephurdg6NmPXk4Y/QYTPou+1VB\nxZsNOomGU5A0twk4NcXUX7egigzhKciTHN9frBsCgYEAxw9ptMnDlaHkmiANvKJd\nMVFM7iwrT1WW4HMyyl8KzFKI8a1O6hlJrxkYmLZrW4BgAy1QVdRO4Jv3UnuKaga7\nuq32fIGyPToFngQ8FQRH5jrJcesJRQNdIuPpLsLvQBFqM7F6tz4w+ByRCtONr0Fh\nlf94hObNjTGvj05OZ6w0ZyQ=\n-----END PRIVATE KEY-----\n",
+  "client_email": "bot-pub-good-friend-2@pub-good-friend-2.iam.gserviceaccount.com",
+  "client_id": "112840551905865697104",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/bot-pub-good-friend-2%40pub-good-friend-2.iam.gserviceaccount.com"
+}

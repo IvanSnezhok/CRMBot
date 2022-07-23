@@ -1,8 +1,8 @@
 from aiogram_dialog import DialogManager, ChatEvent
-from aiogram_dialog.widgets.kbd import Checkbox, ManagedCheckboxAdapter
+from aiogram_dialog.widgets.kbd import ManagedCheckboxAdapter, Multiselect
 from aiogram_dialog.widgets.text import Const
 
-check_lists = [{'Чек лист1.0': ['Включити кіпер той що в залі 7,8,9 стіл',
+check_lists = {'Чек лист1.0': ['Включити кіпер той що в залі 7,8,9 стіл',
                                 'Перерахувати джойстики та записати в групу',
                                 'Підключити джойстики до приставок',
                                 'Включити телевізори (підключити megogo)',
@@ -52,17 +52,15 @@ check_lists = [{'Чек лист1.0': ['Включити кіпер той що 
                                          'Одну корзинку з усім необхідним залишаємо на 2.0 іншу ставимо'
                                          ' на стейнш той що на літньому майданчику',
                                          'Виносимо два стільці один біля хеш1.0, другий біля хеш 2.0.',
-                                         'За 15 хв до початку зміни переодягнутись']}]
+                                         'За 15 хв до початку зміни переодягнутись']}
 
 
 async def check_changed(event: ChatEvent, checkbox: ManagedCheckboxAdapter, manager: DialogManager):
     print("Check status changed:", checkbox.is_checked())
 
-
-check = Checkbox(
-    Const("✓  Checked"),
-    Const("Unchecked"),
-    id="check",
-    default=False,  # so it will be checked by default,
-    on_state_changed=check_changed,
-)
+for key in check_lists:
+    for checkbox in check_lists[key]:
+        Multiselect(
+            f'✅ {checkbox}',
+            f'❌ {checkbox}',
+            id=checkbox + '_' + key,
