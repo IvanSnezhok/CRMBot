@@ -66,43 +66,15 @@ class Database:
         """
         await self.execute(sql, execute=True)
 
-    async def create_table_check_list_hashtag(self):
+    async def check_lists_table(self):
         sql = """
-        CREATE TABLE IF NOT EXISTS hashtag_1 (
+        CREATE TABLE IF NOT EXISTS lists (
         id SERIAL PRIMARY KEY,
         hashtag1 VARCHAR(255) NOT NULL,
-        urls VARCHAR(255) NOT NULL
-        ); 
-        """
-        await self.execute(sql, execute=True)
-
-    async def create_table_check_list_hashtag2(self):
-        sql = """
-        CREATE TABLE IF NOT EXISTS hashtag_2 (
-        id SERIAL PRIMARY KEY,
         hashtag2 VARCHAR(255) NOT NULL,
-        urls VARCHAR(255) NOT NULL
-        ); 
-        """
-        await self.execute(sql, execute=True)
-
-    async def create_table_check_list_outside_1(self):
-        sql = """
-        CREATE TABLE IF NOT EXISTS outside_1 (
-        id SERIAL PRIMARY KEY,
         outside1 VARCHAR(255) NOT NULL,
-        urls VARCHAR(255) NOT NULL
-        ); 
-        """
-        await self.execute(sql, execute=True)
-
-    async def create_table_check_list_outside_2(self):
-        sql = """
-        CREATE TABLE IF NOT EXISTS outside_2 (
-        id SERIAL PRIMARY KEY,
-        outside2 VARCHAR(255) NOT NULL,
-        urls VARCHAR(255) NOT NULL
-        ); 
+        outside2 VARCHAR(255) NOT NULL
+        );
         """
         await self.execute(sql, execute=True)
 
@@ -158,43 +130,32 @@ class Database:
         except Exception as e:
             print(e)
 
-
-    async def add_hashtag_1(self, hashtag1, urls):
-        sql = """
-        INSERT INTO hashtag_1 (hashtag1, urls)
-        VALUES ($1, $2);
-        """
+    async def update_check_lists(self, hashtag1, hashtag2, outside1, outside2, id):
         try:
-            await self.execute(sql, hashtag1, urls, execute=True)
+            sql = """
+            UPDATE lists SET hashtag1 = $1, hashtag2 = $2, outside1 = $3, outside2 = $4
+            WHERE id = $5;
+            """
+            await self.execute(sql, hashtag1, hashtag2, outside1, outside2, id, execute=True)
         except Exception as e:
             print(e)
 
-    async def add_hashtag_2(self, hashtag2, urls):
+    async def get_check_lists(self):
         sql = """
-        INSERT INTO hashtag_2 (hashtag2, urls)
-        VALUES ($1, $2);
+        SELECT hashtag1, hashtag2, outside1, outside2 FROM lists WHERE id = 1;
         """
         try:
-            await self.execute(sql, hashtag2, urls, execute=True)
+            result = await self.execute(sql, fetch=True)
+            return result
         except Exception as e:
             print(e)
 
-    async def add_outside_1(self, outside1, urls):
+    async def get_close_lists(self):
         sql = """
-        INSERT INTO outside_1 (outside1, urls)
-        VALUES ($1, $2);
+        SELECT hashtag1, hashtag2, outside1, outside2 FROM lists WHERE id = 2;
         """
         try:
-            await self.execute(sql, outside1, urls, execute=True)
-        except Exception as e:
-            print(e)
-
-    async def add_outside_2(self, outside2, urls):
-        sql = """
-        INSERT INTO outside_2 (outside2, urls)
-        VALUES ($1, $2);
-        """
-        try:
-            await self.execute(sql, outside2, urls, execute=True)
+            result = await self.execute(sql, fetch=True)
+            return result
         except Exception as e:
             print(e)

@@ -1,66 +1,107 @@
-from aiogram_dialog import DialogManager, ChatEvent
-from aiogram_dialog.widgets.kbd import ManagedCheckboxAdapter, Multiselect
-from aiogram_dialog.widgets.text import Const
+import operator
 
-check_lists = {'Чек лист1.0': ['Включити кіпер той що в залі 7,8,9 стіл',
-                                'Перерахувати джойстики та записати в групу',
-                                'Підключити джойстики до приставок',
-                                'Включити телевізори (підключити megogo)',
-                                'Поставити на зарядку термінал та годиники',
-                                'Подоставляти стільці до 4,9,13 столів',
-                                'Перевірити чи не хитаються столи',
-                                'Пообрізати нитки диванів знизу',
-                                'Попротирати дивани від цегли',
-                                'Включити світильник Гло',
-                                'Перевірити наявність всього необхідного в стейшинах',
-                                'За 15 хв до початку зміни переодягнутись',
-                                'Накрутити рукавички',
-                                'Через годину поміняти джойстики на зарядці'],
-                'Чек лист2.0': ['Включити кіпер на 1.0',
-                                'Відкрити зміну адміна',
-                                'Відкрити касову зміну',
-                                'Відкрити власну зміну',
-                                'Включити кіпер на 2.0',
-                                'Відкрити касову зміну на 2.0',
-                                'Взяти робочий телефон на 2.0',
-                                'Перерахувати джойстики та записати в групу',
-                                'Підключити джойстики до приставок',
-                                'Включити телевізори (підключити megogo)',
-                                'Поставити на зарядку годиники та термінал',
-                                'Включити світильник Гло',
-                                'Включити витяжки',
-                                'Перевірити наявність всього необхідного в стейшинах',
-                                'За 15 хв до початку зміни переодягнутись',
-                                'Накрутити рукавички',
-                                'Через годину поміняти джойстик на зарядці'],
-                'Літній майданчик 1.0': ['Замітаємо весь літній майданчик .',
-                                         'Протираємо всі столики та стейшен.',
-                                         'Витираємо від бруду ніжки столів.',
-                                         'Виносимо подушки (в цьому тобі допомагають працівники які вийшли на 2.0)',
-                                         'На кожен столик розставляємо серветниці вони пронумеровані знизу.',
-                                         'Включити розетки на 2.0 і на 1.0',
-                                         'Одну корзинку з усім необхідним залишаємо на 2.0 '
-                                         'іншу ставимо на стейнш той що на літньому майданчику',
-                                         'Виносимо два стільці один біля хеш1.0, другий біля хеш 2.0.',
-                                         'За 15 хв до початку зміни переодягнутись'],
-                'Літній майданчик 2.0': ['Замітаємо весь літній майданчик .',
-                                         'Протираємо всі столики та стейшен.',
-                                         'Витираємо від бруду ніжки столів.',
-                                         'Виносимо подушки (в цьому тобі допомагають працівники які вийшли на 2.0)',
-                                         'На кожен столик розставляємо серветниці вони пронумеровані знизу.',
-                                         'Включити розетки на 2.0 і на 1.0',
-                                         'Одну корзинку з усім необхідним залишаємо на 2.0 іншу ставимо'
-                                         ' на стейнш той що на літньому майданчику',
-                                         'Виносимо два стільці один біля хеш1.0, другий біля хеш 2.0.',
-                                         'За 15 хв до початку зміни переодягнутись']}
+from aiogram_dialog import Dialog, Window
+from aiogram_dialog.widgets.kbd import Multiselect, Button, Group, Column
+from aiogram_dialog.widgets.text import Format, Const
+
+from data.gsheet import update_all
+from loader import db, dp, registry
+
+from states.diaolg_states import DialogStates
 
 
-async def check_changed(event: ChatEvent, checkbox: ManagedCheckboxAdapter, manager: DialogManager):
-    print("Check status changed:", checkbox.is_checked())
+def csv_to_list_of_tuple(csv):
+    """
+    Return item from csv with index 0 and 1
+    """
+    with open(csv, 'r') as f:
+        return [tuple((y, x)) for x, y in enumerate(f.readlines())]
 
-for key in check_lists:
-    for checkbox in check_lists[key]:
-        Multiselect(
-            f'✅ {checkbox}',
-            f'❌ {checkbox}',
-            id=checkbox + '_' + key,
+
+async def multiselect(items):
+    buttons = Multiselect(
+        checked_text=Format('✓ {item[0]}'),
+        unchecked_text=Format('✖ {item[0]}'),
+        id='multiselect',
+        item_id_getter=operator.itemgetter(1),
+        items=items,
+    )
+    return buttons
+
+
+async def dialogs_manager(key: str):
+    await update_all()
+    dialog1 = Dialog(
+        Window(
+            Const("Ваш Чек-лист 1.0"),
+            Group(
+                Column(await multiselect(csv_to_list_of_tuple("check_list_1_0.csv")), ),
+                Button(Const('Закриття зміни'), id='close'),
+                Button(Const('Технічна перерва'), id='break')), state=DialogStates.cl1))
+
+    dialog2 = Dialog(
+        Window(
+            Const("Ваш Чек-лист 2.0"),
+            Group(
+                Column(await multiselect(csv_to_list_of_tuple("check_list_2_0.csv")), ),
+                Button(Const('Закриття зміни'), id='close'),
+                Button(Const('Технічна перерва'), id='break')), state=DialogStates.cl2))
+
+    dialog3 = Dialog(
+        Window(
+            Const("Літній майданчик 1.0"),
+            Group(
+                Column(await multiselect(csv_to_list_of_tuple("litniy_maydanchik_1_0.csv")), ),
+                Button(Const('Закриття зміни'), id='close'),
+                Button(Const('Технічна перерва'), id='break')), state=DialogStates.lm1))
+
+    dialog4 = Dialog(
+        Window(
+            Const("Літній майданчик 2.0"),
+            Group(
+                Column(await multiselect(csv_to_list_of_tuple("litniy_maydanchik_2_0.csv")), ),
+                Button(Const('Закриття зміни'), id='close'),
+                Button(Const('Технічна перерва'), id='break')), state=DialogStates.lm2))
+
+    dialog5 = Dialog(
+        Window(
+            Const("Закриття зміни, Хештег 1.0"),
+            Group(
+                Column(await multiselect(csv_to_list_of_tuple("close_check_list_1_0.csv")), ),
+                Button(Const('Закриття зміни'), id='close'),
+                Button(Const('Технічна перерва'), id='break')), state=DialogStates.ccl1))
+
+    dialog6 = Dialog(
+        Window(
+            Const("Закриття зміни, Хештег 2.0"),
+            Group(
+                Column(await multiselect(csv_to_list_of_tuple("close_check_list_2_0.csv")), ),
+                Button(Const('Закриття зміни'), id='close'),
+                Button(Const('Технічна перерва'), id='break')), state=DialogStates.ccl2))
+
+    dialog7 = Dialog(
+        Window(
+            Const("Закриття зміни, Літній майданчик 1.0"),
+            Group(
+                Column(await multiselect(csv_to_list_of_tuple("close_litniy_maydanchik_1_0.csv")), ),
+                Button(Const('Закриття зміни'), id='close'),
+                Button(Const('Технічна перерва'), id='break')), state=DialogStates.clm1))
+
+    dialog8 = Dialog(
+        Window(
+            Const("Закриття зміни, Літній майданчик 2.0"),
+            Group(
+                Column(await multiselect(csv_to_list_of_tuple("close_litniy_maydanchik_2_0.csv")), ),
+                Button(Const('Закриття зміни'), id='close'),
+                Button(Const('Технічна перерва'), id='break')), state=DialogStates.clm2))
+
+    dialogs = {'hashtag_1_0': dialog1,
+               'hashtag_2_0': dialog2,
+               'litniy_maydanchik_1_0': dialog3,
+               'litniy_maydanchik_2_0': dialog4,
+               'close_lists_1_0': dialog5,
+               'close_lists_2_0': dialog6,
+               'close_maydanchik_1_0': dialog7,
+               'close_maydanchik_2_0': dialog8}
+    registry.register(dialog=dialogs[key])
+    return dialogs[key]
