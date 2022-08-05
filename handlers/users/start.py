@@ -5,11 +5,12 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.builtin import CommandStart
 
 from aiogram_dialog import DialogManager, StartMode
+from aiogram_dialog.widgets.kbd import Button
 
 from keyboards.default.keyboard import auth_contact, main_menu, geo_send, add_money, remove_keyboard
 from keyboards.inline.keyboard import location, check_lists_read
 from loader import dp, db
-from states.diaolg_states import DialogStates
+from states.diaolg_states import CheckList1, CheckList2, LitniyMaydanchik1, LitniyMaydanchik2
 from utils.check_lists import dialogs_manager
 
 
@@ -59,7 +60,7 @@ async def my_money(message: types.Message):
             money_result = 0
         money_text = []
         all_money = 0.0
-        if money_result is not 0:
+        if money_result is not int or money_result != 0:
             for date, money in money_result.items():
                 money_text.append(f"{date} - {money}")
                 all_money += float(money)
@@ -92,7 +93,7 @@ async def add_money_text(message: types.Message, state: FSMContext):
         money_result = 0
     money_text = []
     all_money = 0.0
-    if money_result is not 0:
+    if money_result is not int or money_result != 0:
         for date, money in money_result.items():
             money_text.append(f"{date} - {money}")
             all_money += float(money)
@@ -114,14 +115,14 @@ async def work_time_place(message: types.Message):
 @dp.callback_query_handler(lambda call: call.data in ['hashtag_1_0', 'hashtag_2_0',
                                                       'litniy_maydanchik_1_0', 'litniy_maydanchik_2_0'])
 async def hashtag_callback(call: types.CallbackQuery, state: FSMContext, dialog_manager: DialogManager):
-    await call.message.answer(f"Ви обрали локацію: {call.data}")
     await dialogs_manager(call.data)
+    await state.set_data({'location': call.data})
     if call.data == 'hashtag_1_0':
-        await dialog_manager.start(state=DialogStates.cl1, mode=StartMode.RESET_STACK)
+        await dialog_manager.start(state=CheckList1.cl1, mode=StartMode.RESET_STACK)
     elif call.data == 'hashtag_2_0':
-        await dialog_manager.start(state=DialogStates.cl2, mode=StartMode.RESET_STACK)
+        await dialog_manager.start(state=CheckList2.cl2, mode=StartMode.RESET_STACK)
     elif call.data == 'litniy_maydanchik_1_0':
-        await dialog_manager.start(state=DialogStates.lm1, mode=StartMode.RESET_STACK)
+        await dialog_manager.start(state=LitniyMaydanchik1.lm1, mode=StartMode.RESET_STACK)
     elif call.data == 'litniy_maydanchik_2_0':
-        await dialog_manager.start(state=DialogStates.lm2, mode=StartMode.RESET_STACK)
+        await dialog_manager.start(state=LitniyMaydanchik2.lm2, mode=StartMode.RESET_STACK)
 
